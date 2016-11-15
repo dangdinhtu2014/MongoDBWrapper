@@ -90,7 +90,7 @@ Inserting data is as simple as constructing an array, and calling the `interact(
 
 ```php
 $query = array(
-    'dbname' => 'users.dfc_users',
+    'collection' => 'users.users.user_details',
     'type' => 'insert'
 );
 
