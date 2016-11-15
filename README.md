@@ -17,8 +17,10 @@ Installing MongoDB on your machine is as simple as doing `install mongodb` in yo
 If you are unsure, there are guides available to assist you in the installation.
 >[Install on Linux][2]
 >Install MongoDB Community Edition and required dependencies on Linux.
+
 >[Install on OS X][3]
 >Install MongoDB Community Edition on OS X systems from Homebrew packages or from MongoDB archives.
+
 >[Install on Windows][4]
 >Install MongoDB Community Edition on Windows systems and optionally start MongoDB as a Windows service.
 > 
