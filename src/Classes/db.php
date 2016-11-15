@@ -183,6 +183,48 @@ class Db
                         echo "On line:", $e->getLine(), "\n";
                 }
             break;
+            case 'remove':
+                try{
+                    $data = $query['data'];
+                    $del = new MongoDB\Driver\BulkWrite;
+
+                    /**
+                     * Create an Insert for each piece of data;
+                     *
+                     */
+
+                    foreach($data as $data_row)
+                    {
+                        $del->delete($data_row);
+                    }
+
+                    /**
+                     * Execute the insert;
+                     *
+                     */
+
+                    $this->_mng->executeBulkWrite($query['collection'], $del);
+                }
+                catch (MongoDB\Driver\Exception\Exception $e) {
+
+                    /**
+                     * Get the name of the file which called the script;
+                     *
+                     */
+                    $filename = basename(__FILE__);
+
+                    /**
+                     * Echo back the error results of the
+                     * connection to MongoDB;
+                     */
+                    echo "The $filename script has experienced an error.\n";
+                    echo "It failed with the following exception:\n";
+
+                    echo "Exception:", $e->getMessage(), "\n";
+                    echo "In file:", $e->getFile(), "\n";
+                    echo "On line:", $e->getLine(), "\n";
+                }
+            break;
         }
     }
 
