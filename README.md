@@ -10,17 +10,15 @@ Setup
 ###MongoDB
 Installing MongoDB on your machine is as simple as doing `install mongodb` in your Package Manager.
 > **i.e**
->	MacOSX - `brew install mongodb`
->	Centos - `yum install mongodb`
+> MacOSX - `brew install mongodb`
+> Centos - `yum install mongodb`
 >  Ubuntu - `apt-get install mongodb`
 
 If you are unsure, there are guides available to assist you in the installation.
 >[Install on Linux][2]
 >Install MongoDB Community Edition and required dependencies on Linux.
-
 >[Install on OS X][3]
 >Install MongoDB Community Edition on OS X systems from Homebrew packages or from MongoDB archives.
-
 >[Install on Windows][4]
 >Install MongoDB Community Edition on Windows systems and optionally start MongoDB as a Windows service.
 > 
@@ -61,15 +59,15 @@ Include the class in your project:
 
 Build your array of Connection Parameters:
 ```php
-	$settings = array(
-	    'host' => 'localhost',
-	    'user' => 'user',
-	    'pass' => 'password',
-	    'port' => '27017',
-	    'db' => 'test',
-	    'connectionName' => 'default',
-	    'connectionOptions' => array(),
-	);
+  $settings = array(
+      'host' => 'localhost',
+      'user' => 'user',
+      'pass' => 'password',
+      'port' => '27017',
+      'db' => 'test',
+      'connectionName' => 'default',
+      'connectionOptions' => array(),
+  );
 ```
 
 The Db class Constructor accepts 1 argument, which is simply an array of settings which are required to connect to your database.
@@ -90,7 +88,7 @@ Inserting data is as simple as constructing an array, and calling the `interact(
 
 ```php
 $query = array(
-    'collection' => 'users.user_details',
+    'dbname' => 'users.dfc_users',
     'type' => 'insert'
 );
 
@@ -248,14 +246,14 @@ For example, the following SQL;
 ```sql
 ...
 WHERE
-	status = 'active';
+  status = 'active';
 ```
 
 would be defined in MongoDB as;
 
 ```php
 $filter = array(
-	'status' => 'active'
+  'status' => 'active'
 );
 ```
 
@@ -269,28 +267,28 @@ Some examples would be;
 // Examples of Greater Than & Less Than Operators
 
 $filter = array(
-	'age' => array(
-		'$gt' => 10
-	),
-	'age' => array(
-		'$lt' => 50
-	)
+  'age' => array(
+    '$gt' => 10
+  ),
+  'age' => array(
+    '$lt' => 50
+  )
 );
 
 // Example of Logical AND
 
 $filter = array(
-	'status' => 'active',
-	'town' => 'Aylesbury'
+  'status' => 'active',
+  'town' => 'Aylesbury'
 );
 
 // Example of Logical OR
 
 $filter = array(
-	'$or' => array(
-	'status' => 'active',
-	'town' => 'Aylesbury'
-	)
+  '$or' => array(
+  'status' => 'active',
+  'town' => 'Aylesbury'
+  )
 );
 ```
 
@@ -302,14 +300,14 @@ In order to limit the columns which are returned from your query, you will need 
 e.g.
 ```php
 $options = array(
-	'projection' => array(
-		'name' => 1,
-		'age' => 1,
-		'_id' => 0
-	)
+  'projection' => array(
+    'name' => 1,
+    'age' => 1,
+    '_id' => 0
+  )
 );
 ```
-This will return us with only the `name` and `age` columns. By default, *if you do not explicitly remove the `_id` column, it will always be returned*.
+This will return us with only the `name` and `age` columns. By default, **if you do not explicitly remove the `_id` column, it will always be returned**.
 
 
 #### Sorting
@@ -318,19 +316,52 @@ To specify an order for the result set, you simply need to add the `'sort'` opti
 You define this by specifying a field to sort by, and assigning either a `1` (ascending) or `-1` (descending) to the field;
 e.g.
 ```php
-	$options = array(
-		'sort' => array(
-			'age' => 1
-		)
-	);
+  $options = array(
+    'sort' => array(
+      'age' => 1
+    )
+  );
 ```
 
 For a full list of query options you can define in your applications. Please consult the PHP.net manual [here][6]
 
+# Deleting / Removing
+
+Removing data from your collections works in the same way as with inserting, with the exception that rather than building a multidimensional array of data to insert, you construct an array for your `WHERE` clause.
+Much in the same way the `WHERE` clause in the query function is constructed, you construct your query with the `collection` and `type` parameters, with the `type` set as **remove**, then you pass in the parameters you would like your query to execute to the `data` field and call the `interact()` function with your query.
+
+e.g.
+```php
+$query = array(
+  'collection' => 'users.user_data',
+  'type' => 'remove',
+  'data' => array(
+      'age' => array(
+          '$gt' => 40
+      ),
+      'status' => 'Married',
+      'occupation' => 'Police Officer'
+  )
+); 
+
+$Db->interact($query);
+```
+
+Executing this query, will remove all entries where the `age` is greater than 40, that have a `status` of 'Married', and who's `occupation` is 'Police Officer'.
+This works in the same way that an SQL / MySQL query would work, where all conditions specified are true for the record it is removing.
+ 
 
 # License
 
 This MongoDB Wrapper class is open-sourced software licensed under the [MIT license][7].
+
+
+# Further Reading
+For more details on working with MongoDB and PHP, I found the following resources extremely useful while writing this class.
+
+[MongoDB Website][8]
+[MongoDB Driver Class PHP.net Page][9]
+[ZetCode MongoDB PHP Tutorial][10]
 
 
   [1]: http://php.net/manual/en/set.mongodb.php
@@ -340,3 +371,6 @@ This MongoDB Wrapper class is open-sourced software licensed under the [MIT lice
   [5]: https://github.com/Homebrew/homebrew-core/issues/6236
   [6]: http://php.net/manual/en/mongodb-driver-query.construct.php
   [7]: https://opensource.org/licenses/MIT
+  [8]: https://docs.mongodb.com/getting-started/shell/introduction
+  [9]: http://php.net/manual/en/book.mongodb.php
+  [10]: http://zetcode.com/db/mongodbphp/
