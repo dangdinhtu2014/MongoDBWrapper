@@ -189,17 +189,14 @@ class Db
                     $del = new MongoDB\Driver\BulkWrite;
 
                     /**
-                     * Create an Insert for each piece of data;
+                     * Apply the Remove Query array to the
+                     * BulkWrite variable;
                      *
                      */
-
-                    foreach($data as $data_row)
-                    {
-                        $del->delete($data_row);
-                    }
+                        $del->delete($data);
 
                     /**
-                     * Execute the insert;
+                     * Execute the Remove;
                      *
                      */
 
